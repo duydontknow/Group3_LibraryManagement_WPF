@@ -1,0 +1,28 @@
+﻿<Window x:Class="LibraryManagementSystem.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Đăng Nhập Hệ Thống" Height="450" Width="350"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
+    <Border Background="#ECF0F1" Padding="25">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="LIBRARY SYSTEM" FontSize="26" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock Text="Vui lòng đăng nhập để tiếp tục" FontSize="14" Foreground="#7F8C8D" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+            <TextBlock Text="Tên đăng nhập" FontWeight="SemiBold" Foreground="#34495E" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Username}" Height="35" FontSize="14" Padding="5" Margin="0,0,0,15" VerticalContentAlignment="Center"/>
+
+            <TextBlock Text="Mật khẩu" FontWeight="SemiBold" Foreground="#34495E" Margin="0,0,0,5"/>
+            <PasswordBox Name="txtPassword" Height="35" FontSize="14" Padding="5" Margin="0,0,0,25" VerticalContentAlignment="Center"/>
+
+            <Button Content="ĐĂNG NHẬP" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=txtPassword}"
+                    Height="45" Background="#2980B9" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Border>
+</Window>
