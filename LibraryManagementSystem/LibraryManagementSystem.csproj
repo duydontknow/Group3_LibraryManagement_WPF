@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="Views\PhieuMuonWindow.xaml.cs">
       <DependentUpon>PhieuMuonWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SachWindow.xaml.cs">
       <DependentUpon>SachWindow.xaml</DependentUpon>
     </Compile>
@@ -145,6 +146,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PhieuMuonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SachWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
