@@ -22,6 +22,7 @@ namespace LibraryManagementSystem.Views
         public SachWindow()
         {
             InitializeComponent();
+            this.DataContext = new ViewModels.SachViewModel();
         }
     }
 }

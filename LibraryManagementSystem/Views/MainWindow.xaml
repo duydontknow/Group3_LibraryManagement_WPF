@@ -15,23 +15,22 @@
             <StackPanel Margin="10,30,10,10">
                 <TextBlock Text="LIBRARY SYSTEM" Foreground="White" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40"/>
 
-                <Button Content="📚 Quản lý Sách (A)" Command="{Binding OpenSachCommand}" 
+                <Button Content="📚 Quản lý Sách" Command="{Binding OpenSachCommand}" 
                         Height="50" Margin="0,5" Background="#34495E" Foreground="White" FontSize="16" BorderThickness="0"/>
 
-                <Button Content="🏷️ Quản lý Thể loại (B)" Command="{Binding OpenTheLoaiCommand}" 
+                <Button Content="🏷️ Quản lý Thể loại" Command="{Binding OpenTheLoaiCommand}" 
                         Height="50" Margin="0,5" Background="#34495E" Foreground="White" FontSize="16" BorderThickness="0"/>
 
-                <Button Content="👥 Quản lý Độc giả (C)" Command="{Binding OpenDocGiaCommand}" 
+                <Button Content="👥 Quản lý Độc giả" Command="{Binding OpenDocGiaCommand}" 
                         Height="50" Margin="0,5" Background="#34495E" Foreground="White" FontSize="16" BorderThickness="0"/>
 
-                <Button Content="👔 Quản lý Nhân viên (D)" Command="{Binding OpenNhanVienCommand}" 
+                <Button Content="👔 Quản lý Nhân viên" Command="{Binding OpenNhanVienCommand}" Visibility="{Binding AdminVisibility}"
                         Height="50" Margin="0,5" Background="#34495E" Foreground="White" FontSize="16" BorderThickness="0"/>
 
-                <Button Content="📝 Quản lý Phiếu mượn (E)" Command="{Binding OpenPhieuMuonCommand}" 
+                <Button Content="📝 Quản lý Phiếu mượn" Command="{Binding OpenPhieuMuonCommand}" 
                         Height="50" Margin="0,5" Background="#34495E" Foreground="White" FontSize="16" BorderThickness="0"/>
 
-                <Button Content="📊 Báo cáo Thống kê (F)" Command="{Binding OpenThongKeCommand}" 
-                        Height="50" Margin="0,5" Background="#34495E" Foreground="White" FontSize="16" BorderThickness="0"/>
+                
             </StackPanel>
         </Border>
 
@@ -45,7 +44,7 @@
                 <Grid Margin="20,0">
                     <TextBlock Text="BẢNG ĐIỀU KHIỂN CHUNG" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#34495E"/>
                     <Button Content="Thoát ứng dụng" Command="{Binding LogoutCommand}" CommandParameter="{Binding ElementName=mainWin}"
-                            HorizontalAlignment="Right" Width="120" Height="35" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                            HorizontalAlignment="Right" Width="140" Height="35" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
                 </Grid>
             </Border>
 

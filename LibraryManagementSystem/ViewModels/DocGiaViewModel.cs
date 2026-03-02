@@ -103,24 +103,28 @@ namespace LibraryManagementSystem.ViewModels
                 }
             });
 
-            DeleteCommand = new RelayCommand<object>(p =>
-            {
-                if (SelectedItem == null)
-                {
-                    MessageBox.Show("Vui lòng chọn 1 độc giả để xóa!");
-                    return;
-                }
+            DeleteCommand = new RelayCommand<object>(p => {
+                if (SelectedItem == null) { MessageBox.Show("Vui lòng chọn 1 độc giả để xóa!"); return; }
 
-                if (MessageBox.Show($"Bạn có chắc muốn hủy thẻ thư viện của {SelectedItem.FullName}?",
-                    "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Bạn có chắc chắn muốn xóa Độc giả này không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     using (var db = new LibraryManagementDBEntities())
                     {
+                        bool hasBorrowed = db.BorrowRecords.Any(x => x.ReaderId == SelectedItem.ReaderId);
+
+                        if (hasBorrowed)
+                        {
+                            MessageBox.Show("Không thể xóa! Độc giả này đã có lịch sử mượn/trả sách.\nĐể đảm bảo an toàn dữ liệu, bạn chỉ có thể xóa những độc giả chưa từng mượn sách.",
+                                            "Lỗi Ràng Buộc Dữ Liệu", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return; 
+                        }
+
                         var dg = db.Readers.Find(SelectedItem.ReaderId);
                         db.Readers.Remove(dg);
                         db.SaveChanges();
+
                         LoadData();
-                        MessageBox.Show("Đã hủy thẻ độc giả!", "Thông báo");
+                        MessageBox.Show("Đã xóa Độc giả khỏi hệ thống!");
                     }
                 }
             });

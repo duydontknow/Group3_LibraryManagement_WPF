@@ -1,8 +1,10 @@
 ﻿using LibraryManagementSystem.Core;
 using LibraryManagementSystem.Models;
+using LibraryManagementSystem.Views;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
 
 namespace LibraryManagementSystem.ViewModels
 {
@@ -17,6 +19,13 @@ namespace LibraryManagementSystem.ViewModels
         private int _sachDangMuon;
         public int SachDangMuon { get => _sachDangMuon; set { _sachDangMuon = value; OnPropertyChanged(); } }
 
+        private Visibility _adminVisibility;
+        public Visibility AdminVisibility
+        {
+            get => _adminVisibility;
+            set { _adminVisibility = value; OnPropertyChanged(); }
+        }
+
         public ICommand OpenSachCommand { get; set; }
         public ICommand OpenTheLoaiCommand { get; set; }
         public ICommand OpenDocGiaCommand { get; set; }
@@ -27,8 +36,12 @@ namespace LibraryManagementSystem.ViewModels
 
         public MainViewModel()
         {
+
+            AdminVisibility = (UserSession.RoleId == 1) ? Visibility.Visible : Visibility.Collapsed;
+
             OpenSachCommand = new RelayCommand<object>(p => {
-                MessageBox.Show("Thành viên A code chức năng Quản lý Sách!", "Thông báo");
+                SachWindow win = new SachWindow();
+                win.ShowDialog();
             });
 
             OpenTheLoaiCommand = new RelayCommand<object>(p => {
@@ -36,19 +49,18 @@ namespace LibraryManagementSystem.ViewModels
             });
 
             OpenDocGiaCommand = new RelayCommand<object>(p => {
-                MessageBox.Show("Thành viên C code chức năng Quản lý Độc giả!", "Thông báo");
+                DocGiaWindow win = new DocGiaWindow();
+                win.ShowDialog();
             });
 
             OpenNhanVienCommand = new RelayCommand<object>(p => {
-                MessageBox.Show("Thành viên D code chức năng Quản lý Nhân viên!", "Thông báo");
+                NhanVienWindow win = new NhanVienWindow();
+                win.ShowDialog();
             });
 
             OpenPhieuMuonCommand = new RelayCommand<object>(p => {
-                MessageBox.Show("Thành viên E code chức năng Quản lý Phiếu mượn!", "Thông báo");
-            });
-
-            OpenThongKeCommand = new RelayCommand<object>(p => {
-                MessageBox.Show("(F) sẽ làm Form Thống kê chi tiết ở đây sau!", "Thông báo");
+                PhieuMuonWindow win = new PhieuMuonWindow();
+                win.ShowDialog();
             });
 
             LogoutCommand = new RelayCommand<Window>(p => {

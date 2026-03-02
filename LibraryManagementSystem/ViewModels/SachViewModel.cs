@@ -106,21 +106,26 @@ namespace LibraryManagementSystem.ViewModels
                 }
             });
 
-            DeleteCommand = new RelayCommand<object>(p =>
-            {
-                if (SelectedItem == null)
-                {
-                    MessageBox.Show("Vui lòng chọn 1 cuốn sách để xóa!");
-                    return;
-                }
-                if (MessageBox.Show("Chắc chắn xóa cuốn sách này?", "Xác nhận",
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            DeleteCommand = new RelayCommand<object>(p => {
+                if (SelectedItem == null) { MessageBox.Show("Vui lòng chọn 1 cuốn sách để xóa!"); return; }
+
+                if (MessageBox.Show("Chắc chắn xóa cuốn sách này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     using (var db = new LibraryManagementDBEntities())
                     {
+                        bool isBorrowed = db.BorrowDetails.Any(x => x.BookId == SelectedItem.BookId);
+
+                        if (isBorrowed)
+                        {
+                            MessageBox.Show("Không thể xóa! Cuốn sách này đã có lịch sử mượn/trả.\nNếu sách đã hỏng hoặc mất, vui lòng Bấm Sửa và cập nhật Số lượng về 0.",
+                                            "Lỗi Ràng Buộc Dữ Liệu", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return; 
+                        }
+
                         var sach = db.Books.Find(SelectedItem.BookId);
                         db.Books.Remove(sach);
                         db.SaveChanges();
+
                         LoadData();
                         MessageBox.Show("Đã xóa sách khỏi thư viện!");
                     }

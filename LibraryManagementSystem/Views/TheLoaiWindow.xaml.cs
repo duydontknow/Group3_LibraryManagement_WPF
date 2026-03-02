@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 namespace LibraryManagementSystem.Views
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for TheLoaiWindow.xaml
     /// </summary>
-    public partial class DocGiaWindow : Window
+    public partial class TheLoaiWindow : Window
     {
-        public DocGiaWindow()
+        public TheLoaiWindow()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.DocGiaViewModel();
+            this.DataContext = new ViewModels.TheLoaiViewModel();
         }
     }
 }

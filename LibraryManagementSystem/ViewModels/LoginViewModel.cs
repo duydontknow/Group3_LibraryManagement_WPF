@@ -21,43 +21,35 @@ namespace LibraryManagementSystem.ViewModels
 
         public LoginViewModel()
         {
-            LoginCommand = new RelayCommand<PasswordBox>(p => {
+            LoginCommand = new RelayCommand<object>(p => {
                 if (p == null) return;
 
-                string password = p.Password;
+                var passwordBox = p as System.Windows.Controls.PasswordBox;
+                string password = passwordBox.Password;
+                string username = Username; 
 
-                if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(password))
+                using (var db = new LibraryManagementDBEntities())
                 {
-                    MessageBox.Show("Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                    var acc = db.Accounts.FirstOrDefault(x => x.Username == username && x.PasswordHash == password);
 
-                try
-                {
-                    using (var db = new LibraryManagementDBEntities())
+                    if (acc != null)
                     {
-                        var acc = db.Accounts.FirstOrDefault(x => x.Username == Username && x.PasswordHash == password);
+                        UserSession.AccountId = acc.AccountId;
+                        UserSession.RoleId = acc.RoleId ?? 2; 
 
-                        if (acc != null)
-                        {
-                            MainWindow mainWin = new MainWindow();
-                            mainWin.Show();
+                        MainWindow main = new MainWindow();
+                        main.Show();
 
-                            Window loginWin = Window.GetWindow(p);
-                            if (loginWin != null)
-                            {
-                                loginWin.Close();
-                            }
-                        }
-                        else
+                        var loginWindow = System.Windows.Window.GetWindow(passwordBox);
+                        if (loginWindow != null)
                         {
-                            MessageBox.Show("Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                            loginWindow.Close();
                         }
                     }
-                }
-                catch
-                {
-                    MessageBox.Show("Không thể kết nối đến Cơ sở dữ liệu. Hãy kiểm tra lại cấu hình SQL!", "Lỗi nghiêm trọng", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                    {
+                        MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Đăng nhập thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             });
         }
