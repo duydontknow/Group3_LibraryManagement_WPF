@@ -70,6 +70,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\NhanVienViewModel.cs" />
     <Compile Include="ViewModels\PhieuMuonViewModel.cs" />
+    <Compile Include="ViewModels\SachViewModel.cs" />
     <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -78,6 +79,8 @@
     </Compile>
     <Compile Include="Views\PhieuMuonWindow.xaml.cs">
       <DependentUpon>PhieuMuonWindow.xaml</DependentUpon>
+    <Compile Include="Views\SachWindow.xaml.cs">
+      <DependentUpon>SachWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\LoginWindow.xaml">
       <SubType>Designer</SubType>
@@ -142,6 +145,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PhieuMuonWindow.xaml">
+    <Page Include="Views\SachWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
