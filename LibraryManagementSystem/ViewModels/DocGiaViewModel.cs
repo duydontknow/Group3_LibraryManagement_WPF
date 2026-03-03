@@ -66,17 +66,33 @@ namespace LibraryManagementSystem.ViewModels
             {
                 if (string.IsNullOrEmpty(FullName) || string.IsNullOrEmpty(IdentifyCard))
                 {
-                    MessageBox.Show("Vui lòng nhập tối thiểu Họ tên và CMND/CCCD!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Vui lòng nhập đầy đủ Họ tên và Số CCCD!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
                 using (var db = new LibraryManagementDBEntities())
                 {
-                    var dg = new Reader { FullName = FullName, IdentifyCard = IdentifyCard, Address = Address };
-                    db.Readers.Add(dg);
+                    var checkDuplicate = db.Readers.FirstOrDefault(x => x.IdentifyCard == IdentifyCard);
+
+                    if (checkDuplicate != null)
+                    {
+                        MessageBox.Show("Số CCCD này đã được đăng ký cho Độc giả khác. Vui lòng kiểm tra lại!",
+                                        "Lỗi Trùng Lặp Dữ Liệu", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return; 
+                    }
+
+                    var docGiaMoi = new Reader()
+                    {
+                        FullName = FullName,
+                        IdentifyCard = IdentifyCard,
+                        Address = Address
+                    };
+
+                    db.Readers.Add(docGiaMoi);
                     db.SaveChanges();
+
                     LoadData();
-                    MessageBox.Show("Đăng ký thẻ độc giả thành công!", "Thông báo");
+                    MessageBox.Show("Thêm Độc giả thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             });
 

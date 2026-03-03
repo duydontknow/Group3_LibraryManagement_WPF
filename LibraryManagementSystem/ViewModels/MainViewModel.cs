@@ -45,7 +45,8 @@ namespace LibraryManagementSystem.ViewModels
             });
 
             OpenTheLoaiCommand = new RelayCommand<object>(p => {
-                MessageBox.Show("Thành viên B code chức năng Quản lý Thể loại!", "Thông báo");
+                TheLoaiWindow win = new TheLoaiWindow();
+                win.ShowDialog();
             });
 
             OpenDocGiaCommand = new RelayCommand<object>(p => {

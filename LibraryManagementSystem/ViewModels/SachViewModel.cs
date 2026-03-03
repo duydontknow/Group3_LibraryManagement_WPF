@@ -16,6 +16,13 @@ namespace LibraryManagementSystem.ViewModels
             set { _listSach = value; OnPropertyChanged(); }
         }
 
+        private ObservableCollection<Category> _listTheLoai;
+        public ObservableCollection<Category> ListTheLoai
+        {
+            get => _listTheLoai;
+            set { _listTheLoai = value; OnPropertyChanged(); }
+        }
+
         private string _title;
         public string Title
         {
@@ -37,6 +44,13 @@ namespace LibraryManagementSystem.ViewModels
             set { _quantity = value; OnPropertyChanged(); }
         }
 
+        private int? _selectedCategoryId;
+        public int? SelectedCategoryId
+        {
+            get => _selectedCategoryId;
+            set { _selectedCategoryId = value; OnPropertyChanged(); }
+        }
+
         private Book _selectedItem;
         public Book SelectedItem
         {
@@ -50,6 +64,11 @@ namespace LibraryManagementSystem.ViewModels
                     Title = _selectedItem.Title;
                     Author = _selectedItem.Author;
                     Quantity = _selectedItem.Quantity;
+                    SelectedCategoryId = _selectedItem.CategoryId;
+                }
+                else
+                {
+                    ResetForm();
                 }
             }
         }
@@ -64,9 +83,9 @@ namespace LibraryManagementSystem.ViewModels
 
             AddCommand = new RelayCommand<object>(p =>
             {
-                if (string.IsNullOrEmpty(Title))
+                if (string.IsNullOrEmpty(Title) || SelectedCategoryId == null)
                 {
-                    MessageBox.Show("Vui lòng nhập tên sách!", "Cảnh báo");
+                    MessageBox.Show("Vui lòng nhập tên sách và chọn thể loại!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 using (var db = new LibraryManagementDBEntities())
@@ -75,12 +94,14 @@ namespace LibraryManagementSystem.ViewModels
                     {
                         Title = Title,
                         Author = Author,
-                        Quantity = Quantity
+                        Quantity = Quantity,
+                        CategoryId = SelectedCategoryId
                     };
                     db.Books.Add(sachMoi);
                     db.SaveChanges();
                     LoadData();
-                    MessageBox.Show("Thêm sách thành công!");
+                    ResetForm();
+                    MessageBox.Show("Thêm sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             });
 
@@ -88,7 +109,12 @@ namespace LibraryManagementSystem.ViewModels
             {
                 if (SelectedItem == null)
                 {
-                    MessageBox.Show("Vui lòng chọn 1 cuốn sách bên phải để sửa!");
+                    MessageBox.Show("Vui lòng chọn 1 cuốn sách bên phải để sửa!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (string.IsNullOrEmpty(Title) || SelectedCategoryId == null)
+                {
+                    MessageBox.Show("Vui lòng nhập tên sách và chọn thể loại!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 using (var db = new LibraryManagementDBEntities())
@@ -99,15 +125,17 @@ namespace LibraryManagementSystem.ViewModels
                         sach.Title = Title;
                         sach.Author = Author;
                         sach.Quantity = Quantity;
+                        sach.CategoryId = SelectedCategoryId;
                         db.SaveChanges();
                         LoadData();
-                        MessageBox.Show("Cập nhật thành công!");
+                        ResetForm();
+                        MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             });
 
             DeleteCommand = new RelayCommand<object>(p => {
-                if (SelectedItem == null) { MessageBox.Show("Vui lòng chọn 1 cuốn sách để xóa!"); return; }
+                if (SelectedItem == null) { MessageBox.Show("Vui lòng chọn 1 cuốn sách để xóa!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning); return; }
 
                 if (MessageBox.Show("Chắc chắn xóa cuốn sách này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
@@ -119,7 +147,7 @@ namespace LibraryManagementSystem.ViewModels
                         {
                             MessageBox.Show("Không thể xóa! Cuốn sách này đã có lịch sử mượn/trả.\nNếu sách đã hỏng hoặc mất, vui lòng Bấm Sửa và cập nhật Số lượng về 0.",
                                             "Lỗi Ràng Buộc Dữ Liệu", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return; 
+                            return;
                         }
 
                         var sach = db.Books.Find(SelectedItem.BookId);
@@ -127,7 +155,8 @@ namespace LibraryManagementSystem.ViewModels
                         db.SaveChanges();
 
                         LoadData();
-                        MessageBox.Show("Đã xóa sách khỏi thư viện!");
+                        ResetForm();
+                        MessageBox.Show("Đã xóa sách khỏi thư viện!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             });
@@ -137,9 +166,17 @@ namespace LibraryManagementSystem.ViewModels
         {
             using (var db = new LibraryManagementDBEntities())
             {
-                ListSach = new ObservableCollection<Book>(db.Books.ToList());
+                ListTheLoai = new ObservableCollection<Category>(db.Categories.ToList());
+                ListSach = new ObservableCollection<Book>(db.Books.Include("Category").ToList());
             }
+        }
+
+        private void ResetForm()
+        {
+            Title = "";
+            Author = "";
+            Quantity = null;
+            SelectedCategoryId = null;
         }
     }
 }
-

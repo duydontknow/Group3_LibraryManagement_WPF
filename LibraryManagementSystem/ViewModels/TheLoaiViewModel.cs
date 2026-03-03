@@ -93,25 +93,33 @@ namespace LibraryManagementSystem.ViewModels
                 }
             });
 
-            DeleteCommand = new RelayCommand<object>(p =>
-            {
+            DeleteCommand = new RelayCommand<object>(p => {
                 if (SelectedItem == null)
                 {
-                    MessageBox.Show("Vui lòng chọn 1 thể loại để xóa!");
+                    MessageBox.Show("Vui lòng chọn 1 thể loại để xóa!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                if (MessageBox.Show($"Bạn có chắc muốn xóa thể loại '{SelectedItem.CategoryName}'?",
-                    "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Bạn có chắc chắn muốn xóa Thể loại '{SelectedItem.CategoryName}' không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     using (var db = new LibraryManagementDBEntities())
                     {
-                        var tl = db.Categories.Find(SelectedItem.CategoryId);
-                        db.Categories.Remove(tl);
-                        db.SaveChanges();
+                        bool isUsed = db.Books.Any(x => x.CategoryId == SelectedItem.CategoryId);
 
-                        LoadData();
-                        MessageBox.Show("Đã xóa thể loại!");
+                        if (isUsed)
+                        {
+                            MessageBox.Show("Không thể xóa! Đang có sách thuộc Thể loại này trong thư viện.\nĐể bảo toàn dữ liệu, vui lòng xóa (hoặc đổi thể loại) cho các sách đó trước khi xóa Thể loại này.",
+                                            "Lỗi Ràng Buộc Dữ Liệu", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        var tl = db.Categories.Find(SelectedItem.CategoryId);
+                        if (tl != null)
+                        {
+                            db.Categories.Remove(tl);
+                            db.SaveChanges();
+                            LoadData();
+                            MessageBox.Show("Đã xóa Thể loại thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
                     }
                 }
             });

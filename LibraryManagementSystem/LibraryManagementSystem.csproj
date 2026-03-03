@@ -73,6 +73,7 @@
     <Compile Include="ViewModels\NhanVienViewModel.cs" />
     <Compile Include="ViewModels\PhieuMuonViewModel.cs" />
     <Compile Include="ViewModels\SachViewModel.cs" />
+    <Compile Include="ViewModels\TheLoaiViewModel.cs" />
     <Compile Include="Views\DocGiaWindow.xaml.cs">
       <DependentUpon>DocGiaWindow.xaml</DependentUpon>
     </Compile>
@@ -87,6 +88,9 @@
     </Compile>
     <Compile Include="Views\SachWindow.xaml.cs">
       <DependentUpon>SachWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TheLoaiWindow.xaml.cs">
+      <DependentUpon>TheLoaiWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\DocGiaWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +165,10 @@
     <Page Include="Views\SachWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TheLoaiWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
