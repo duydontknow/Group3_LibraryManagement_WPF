@@ -24,3 +24,4 @@ namespace LibraryManagementSystem.Core
         public void Execute(object parameter) => _execute((T)parameter);
     }
 }
+
